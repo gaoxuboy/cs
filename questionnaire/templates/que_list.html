@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+    <style>
+        .hide{
+            display: none;
+        }
+        ol {
+            padding: 0;
+            list-style: none;
+            counter-reset: sectioncounter
+        }
+
+        ol > li:before {
+            content: '问题' counter(sectioncounter) ':';
+            counter-increment: sectioncounter;
+            font-size: 18px;
+            color: #d4d4d4;
+        }
+
+        ol > li:nth-of-type(odd) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" value="POST请求">
+    </form>
+
+    <ol>
+        {% for item in form_list %}
+            <li>
+                <div pk="{{ item.obj.id }}">
+                    <p>问题名称:{{ item.form.caption }}</p>
+                    <p>问题类型:{{ item.form.tp }} <a href="#" class="{{ item.option_class }}">添加选项</a> </p>
+                    <ul>
+                        {% for v in item.options %}
+                            <li id="{{ v.obj.id }}">{{ v.form }}</li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
+            </li>
+        {% endfor %}
+    </ol>
+</body>
+</html>
